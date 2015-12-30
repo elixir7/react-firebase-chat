@@ -1,7 +1,7 @@
 {
   "name": "React + Firebase Chat App",
   "version": "1.0.0",
-  "description": "React + Firebase Chat App",
+  "description": "Chat App",
   "main": "index.js",
   "scripts": {
     "start": "watchify src/main.jsx -v -t [ babelify --presets [react] ] -o public/js/main.js",
