@@ -1,16 +1,20 @@
 var React = require('react');
 var ChatMessage = require('./ChatMessage.jsx');
+var userNamePrompt = prompt("Your name:");
+var user;
+if(userNamePrompt != null){
+  user = userNamePrompt;
+}
 
 var ChatApp = React.createClass({
   mixins: [ReactFireMixin],
-
   getInitialState: function() {
     return {
       items: [],
+      user: '',
       text: ''
     };
   },
-
   componentWillMount: function() {
     var firebaseRef = new Firebase('https://react-firebase-chat.firebaseio.com/messages');
     this.bindAsArray(firebaseRef.limitToLast(15), 'items');
@@ -29,6 +33,7 @@ var ChatApp = React.createClass({
     e.preventDefault();
     if (this.state.text && this.state.text.trim().length !== 0) {
       this.firebaseRefs['items'].push({
+        user: user,
         text: this.state.text
       });
       this.setState({
