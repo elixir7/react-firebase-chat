@@ -23190,7 +23190,7 @@ var Route = ReactRouter.Route;
 
 var CreateHistory = require('history/lib/createHashHistory');
 
-var TodoApp = require('./components/TodoApp.jsx');
+var ChatApp = require('./components/ChatApp.jsx');
 
 //Removes the haskey from the url and shows the page name in text
 var History = new CreateHistory({
@@ -23200,17 +23200,17 @@ var History = new CreateHistory({
 var Routes = React.createElement(
   Router,
   { history: History },
-  React.createElement(Route, { path: '/', component: TodoApp })
+  React.createElement(Route, { path: '/', component: ChatApp })
 );
 
 module.exports = Routes;
 
-},{"./components/TodoApp.jsx":207,"history/lib/createHashHistory":37,"react":203,"react-router":70}],207:[function(require,module,exports){
+},{"./components/ChatApp.jsx":207,"history/lib/createHashHistory":37,"react":203,"react-router":70}],207:[function(require,module,exports){
 var React = require('react');
-var TodoList = require('./TodoList.jsx');
+var ChatMessage = require('./ChatMessage.jsx');
 
-var TodoApp = React.createClass({
-  displayName: 'TodoApp',
+var ChatApp = React.createClass({
+  displayName: 'ChatApp',
 
   mixins: [ReactFireMixin],
 
@@ -23222,8 +23222,8 @@ var TodoApp = React.createClass({
   },
 
   componentWillMount: function () {
-    var firebaseRef = new Firebase('https://elixir7-firebase-test.firebaseio.com/items/');
-    this.bindAsArray(firebaseRef.limitToLast(25), 'items');
+    var firebaseRef = new Firebase('https://react-firebase-chat.firebaseio.com/messages');
+    this.bindAsArray(firebaseRef.limitToLast(15), 'items');
   },
 
   onChange: function (e) {
@@ -23231,7 +23231,7 @@ var TodoApp = React.createClass({
   },
 
   removeItem: function (key) {
-    var firebaseRef = new Firebase('https://elixir7-firebase-test.firebaseio.com/items/');
+    var firebaseRef = new Firebase('https://react-firebase-chat.firebaseio.com/messages');
     firebaseRef.child(key).remove();
   },
 
@@ -23258,19 +23258,49 @@ var TodoApp = React.createClass({
           'div',
           { className: 'col-md-6 col-md-offset-3' },
           React.createElement(
-            'h1',
-            null,
-            'Todo List Test with FireBase'
-          ),
-          React.createElement(TodoList, { items: this.state.items, removeItem: this.removeItem }),
-          React.createElement(
-            'form',
-            { onSubmit: this.handleSubmit },
-            React.createElement('input', { onChange: this.onChange, value: this.state.text }),
+            'div',
+            { className: 'panel panel-primary' },
             React.createElement(
-              'button',
-              null,
-              'Add #' + (this.state.items.length + 1)
+              'div',
+              { className: 'panel-heading' },
+              React.createElement(
+                'h1',
+                null,
+                'React + Firebase Chat App'
+              )
+            ),
+            React.createElement(
+              'div',
+              { className: 'panel-body' },
+              React.createElement(
+                'h3',
+                null,
+                'Messages: ',
+                this.state.items.length
+              ),
+              React.createElement(
+                'div',
+                { className: 'chat-messages' },
+                React.createElement(ChatMessage, { items: this.state.items, removeItem: this.removeItem })
+              ),
+              React.createElement(
+                'form',
+                { className: 'form-group', onSubmit: this.handleSubmit },
+                React.createElement(
+                  'div',
+                  { className: 'input-group' },
+                  React.createElement('input', { type: 'text', placeholder: 'Write your message here...', className: 'form-control', onChange: this.onChange, value: this.state.text }),
+                  React.createElement(
+                    'span',
+                    { className: 'input-group-btn' },
+                    React.createElement(
+                      'button',
+                      { type: 'btn', className: 'btn btn-primary' },
+                      React.createElement('i', { className: 'fa fa-comment' })
+                    )
+                  )
+                )
+              )
             )
           )
         )
@@ -23279,43 +23309,43 @@ var TodoApp = React.createClass({
   }
 });
 
-module.exports = TodoApp;
+module.exports = ChatApp;
 
-},{"./TodoList.jsx":208,"react":203}],208:[function(require,module,exports){
+},{"./ChatMessage.jsx":208,"react":203}],208:[function(require,module,exports){
 var React = require('react');
 
-var TodoList = React.createClass({
-  displayName: 'TodoList',
+var ChatMessage = React.createClass({
+  displayName: 'ChatMessage',
 
   render: function () {
     var _this = this;
     var createItem = function (item, index) {
       return React.createElement(
-        'li',
+        'div',
         { key: index },
-        item.text,
-        React.createElement('i', { className: 'fa fa-minus-circle', onClick: _this.props.removeItem.bind(null, item['.key']),
-          style: { color: '#DC4E41', marginLeft: '10px', cursor: 'pointer' } })
+        React.createElement(
+          'p',
+          null,
+          React.createElement(
+            'em',
+            null,
+            'Anonym: '
+          ),
+          item.text,
+          React.createElement('i', { className: 'fa fa-minus-circle pull-right', onClick: _this.props.removeItem.bind(null, item['.key']),
+            style: { color: '#DC4E41', marginLeft: '10px', cursor: 'pointer' } })
+        )
       );
     };
     return React.createElement(
       'div',
       null,
-      React.createElement(
-        'h3',
-        null,
-        'Items:'
-      ),
-      React.createElement(
-        'ul',
-        null,
-        this.props.items.map(createItem)
-      )
+      this.props.items.map(createItem)
     );
   }
 });
 
-module.exports = TodoList;
+module.exports = ChatMessage;
 
 },{"react":203}],209:[function(require,module,exports){
 var React = require('react');
