@@ -1,7 +1,7 @@
 {
-  "name": "React + Firebase Chat App",
+  "name": "Chat-App",
   "version": "1.0.0",
-  "description": "Chat App",
+  "description": "React and Firebase Chat App",
   "main": "index.js",
   "scripts": {
     "start": "watchify src/main.jsx -v -t [ babelify --presets [react] ] -o public/js/main.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elixir7/react-firebase-chat"
+    "url": "git+https://github.com/elixir7/react-firebase-chat.git"
   },
   "author": "Isak Åslund",
   "license": "ISC",
